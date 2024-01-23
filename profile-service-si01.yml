@@ -1,0 +1,3 @@
+name: profile-service-si01
+port: 8085
+dbname: test1
