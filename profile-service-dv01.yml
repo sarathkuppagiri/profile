@@ -3,7 +3,7 @@ port: 8082
 dbname: test
 drools:
   myRule: |
-                   import com.example.helloworld.model.TaxiRi;
+                   import com.example.helloworld.model.TaxiRide;
                    import com.example.helloworld.model.Fare;
                    import java.util.*;
                    
