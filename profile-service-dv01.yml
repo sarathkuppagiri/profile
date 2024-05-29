@@ -1,3 +1,65 @@
 name: profile-service
 port: 8082
 dbname: test
+drools:
+  myRule: |
+                   import com.example.helloworld.model.TaxiRide;
+                   import com.example.helloworld.model.Fare;
+                   import java.util.*;
+                   
+                   global com.example.helloworld.model.Fare rideFare;
+                   dialect  "mvel"
+                   
+                   rule "Calculate Taxi Fare - Scenario 1"
+                   	when
+                   		taxiRideInstance:TaxiRide(isNightSurcharge == false && distanceInMile < 10);
+                   	then
+                   		rideFare.setNightSurcharge(0);
+                   		rideFare.setRideFare(70);
+                   end
+                   
+                   rule "Calculate Taxi Fare - Scenario 2"
+                   	when
+                   		taxiRideInstance:TaxiRide(isNightSurcharge == true && distanceInMile < 10);
+                   	then
+                   		rideFare.setNightSurcharge(30);
+                   		rideFare.setRideFare(70);
+                   end
+                   
+                   
+                   rule "Calculate Taxi Fare - Scenario 3"
+                   	when
+                   		taxiRideInstance:TaxiRide(isNightSurcharge == false && distanceInMile >= 10 && distanceInMile < 100);
+                   	then
+                   		rideFare.setNightSurcharge(0);
+                   		rideFare.setRideFare(70+(2*taxiRideInstance.getDistanceInMile()));
+                   end
+                   
+                   
+                   rule "Calculate Taxi Fare - Scenario 4"
+                   	when
+                   		taxiRideInstance:TaxiRide(isNightSurcharge == true && distanceInMile >= 10 && distanceInMile < 100);
+                   	then
+                   		rideFare.setNightSurcharge(30+taxiRideInstance.getDistanceInMile());
+                   		rideFare.setRideFare(70+(2*taxiRideInstance.getDistanceInMile()));
+                   end
+                   
+                   
+                   rule "Calculate Taxi Fare - Scenario 5"
+                   	when
+                   		taxiRideInstance:TaxiRide(isNightSurcharge == false && distanceInMile >= 100);
+                   	then
+                   		rideFare.setNightSurcharge(0);
+                   		rideFare.setRideFare(70+(1.5*taxiRideInstance.getDistanceInMile()));
+                   end
+                   
+                   rule "Calculate Taxi Fare - Scenario 6"
+                   	when
+                   		taxiRideInstance:TaxiRide(isNightSurcharge == true && distanceInMile >= 100);
+                   	then
+                   		rideFare.setNightSurcharge(30+taxiRideInstance.getDistanceInMile());
+                   		rideFare.setRideFare(70+(1.5*taxiRideInstance.getDistanceInMile()));
+                   end
+                   	
+
+
